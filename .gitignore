@@ -1,0 +1,9 @@
+# Ignore environment files
+project/.env
+
+# Ignore macOS system files
+.DS_Store
+project/src/.DS_Store
+
+# Ignore cache and build files
+project/var/cache/
