@@ -40,7 +40,6 @@ class SendNotificationCommand extends Command
         $this->sendNotificationHandler->handle($notification);
 
         $output->writeln('Notification sent successfully.');
-        var_dump('hello');
 
         return Command::SUCCESS;
     }
