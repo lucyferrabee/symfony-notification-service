@@ -15,9 +15,4 @@ class AwsSesSender implements NotificationSenderInterface
         }
         return $result;
     }
-
-    public function supports(string $channel, bool $isSecondary = false): bool
-    {
-        return $channel === 'email' && !$isSecondary;
-    }
 }

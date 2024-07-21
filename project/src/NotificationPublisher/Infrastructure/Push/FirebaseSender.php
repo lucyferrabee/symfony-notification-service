@@ -16,9 +16,4 @@ class FirebaseSender implements NotificationSenderInterface
         }
         return $result;
     }
-
-    public function supports(string $channel, bool $isSecondary = false): bool
-    {
-        return $channel === 'push' && $isSecondary;
-    }
 }
