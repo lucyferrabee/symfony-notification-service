@@ -2,31 +2,29 @@
 
 namespace App\NotificationPublisher\Application\Service;
 
-use App\NotificationPublisher\Infrastructure\Email\EmailSenderInterface;
-use App\NotificationPublisher\Infrastructure\SMS\SmsSenderInterface;
+use App\NotificationPublisher\Domain\Service\NotificationSenderInterface;
+use InvalidArgumentException;
 
 class NotificationSender
 {
-    private EmailSenderInterface $emailSender;
-    private SmsSenderInterface $smsSender;
+    private iterable $notificationSenders;
 
-    public function __construct(EmailSenderInterface $emailSender, SmsSenderInterface $smsSender)
+    public function __construct(iterable $notificationSenders)
     {
-        $this->emailSender = $emailSender;
-        $this->smsSender = $smsSender;
+        $this->notificationSenders = $notificationSenders;
     }
 
     public function send(string $userId, string $message, string $channel)
     {
-        switch ($channel) {
-            case 'email':
-                $this->emailSender->send($userId, $message);
-                break;
-            case 'sms':
-                $this->smsSender->send($userId, $message);
-                break;
-            default:
-                throw new \InvalidArgumentException('Unsupported notification channel');
+        foreach ($this->notificationSenders as $sender) {
+            try {
+                $sender->send($userId, $message, $channel);
+                return;
+            } catch (InvalidArgumentException $e) {
+                // This sender does not support the provided channel, continue to the next one
+            }
         }
+
+        throw new InvalidArgumentException('No sender supports the given channel');
     }
 }

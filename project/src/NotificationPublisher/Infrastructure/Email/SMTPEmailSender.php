@@ -3,7 +3,7 @@
 namespace App\NotificationPublisher\Infrastructure\Email;
 use App\NotificationPublisher\Domain\Service\NotificationSenderInterface;
 
-class AwsSesEmailSender implements NotificationSenderInterface
+class SMTPEmailSender implements NotificationSenderInterface
 {
     public function send(string $userId, string $message, string $channel): bool
     {
@@ -13,9 +13,9 @@ class AwsSesEmailSender implements NotificationSenderInterface
 
         $result = (bool)random_int(0, 1);
         if ($result) {
-            var_dump('AWS SES email sent');
+            var_dump('SMTP email sent');
         } else {
-            var_dump('AWS SES email not sent');
+            var_dump('SMTP email not sent');
         }
         return $result;
     }

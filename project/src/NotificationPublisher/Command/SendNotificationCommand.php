@@ -43,19 +43,4 @@ class SendNotificationCommand extends Command
 
         return Command::SUCCESS;
     }
-
-    protected function getUserId(): int
-    {
-        return 1;
-    }
-
-    protected function getMessage(): string
-    {
-        return 'This is your notification';
-    }
-
-    protected function getChannel(): string
-    {
-        return 'email';
-    }
 }

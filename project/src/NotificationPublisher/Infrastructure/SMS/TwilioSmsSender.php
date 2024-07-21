@@ -1,11 +1,27 @@
 <?php
 
 namespace App\NotificationPublisher\Infrastructure\SMS;
+use App\NotificationPublisher\Domain\Service\NotificationSenderInterface;
 
-class TwilioSmsSender implements SmsSenderInterface
+class TwilioSmsSender implements NotificationSenderInterface
 {
-    public function send(string $userId, string $message): void
+    public function send(string $userId, string $message, string $channel): bool
     {
-        // Twilio SMS logic to send message
+        if ($channel !== 'sms') {
+            throw new \InvalidArgumentException('Unsupported notification channel');
+        }
+
+        $result = (bool)random_int(0, 1);
+        if ($result) {
+            var_dump('Twilio SMS sent');
+        } else {
+            var_dump('Twilio SMS not sent');
+        }
+        return $result;
+    }
+
+    public function supports(string $channel): bool
+    {
+        return $channel === 'sms';
     }
 }
