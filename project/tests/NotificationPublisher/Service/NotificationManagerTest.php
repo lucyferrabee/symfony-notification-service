@@ -4,7 +4,7 @@ namespace App\Tests\NotificationPublisher\Application\Service;
 
 use App\NotificationPublisher\Application\Service\NotificationManager;
 use App\NotificationPublisher\Domain\Service\NotificationSenderInterface;
-use App\NotificationPublisher\Infrastructure\Email\AwsSesSender;
+use App\NotificationPublisher\Infrastructure\Email\WhatsappSender;
 use App\NotificationPublisher\Infrastructure\Email\SMTPSender;
 use App\NotificationPublisher\Infrastructure\Push\FirebaseSender;
 use App\NotificationPublisher\Infrastructure\Push\PushySender;
@@ -17,9 +17,9 @@ class NotificationManagerTest extends TestCase
 
     protected function setUp(): void
     {
-        $primaryEmailSender = $this->createMock(AwsSesSender::class);
+        $primaryEmailSender = $this->createMock(WhatsappSender::class);
         $secondaryEmailSender = $this->createMock(SMTPSender::class);
-        $primarySmsSender = $this->createMock(NexmoSender::class);
+        $primarySmsSender = $this->createMock(WhatsappSender::class);
         $primaryPushSender = $this->createMock(PushySender::class);
         $secondaryPushSender = $this->createMock(FirebaseSender::class);
 
@@ -40,11 +40,10 @@ class NotificationManagerTest extends TestCase
             ],
             [
                 'email' => [
-                    'primary' => AwsSesSender::class,
                     'secondary' => SMTPSender::class
                 ],
-                'sms' => [
-                    'primary' => NexmoSender::class,
+                'whatsapp' => [
+                    'primary' => WhatsappSender::class,
                 ],
                 'push' => [
                     'primary' => PushySender::class,
@@ -62,7 +61,7 @@ class NotificationManagerTest extends TestCase
 
     public function testSendNotificationPrimaryFailureSecondarySuccess()
     {
-        $primaryEmailSender = $this->createMock(AwsSesSender::class);
+        $primaryEmailSender = $this->createMock(WhatsappSender::class);
         $secondaryEmailSender = $this->createMock(SMTPSender::class);
 
         $primaryEmailSender->method('send')->willReturn(false);
@@ -75,7 +74,7 @@ class NotificationManagerTest extends TestCase
             ],
             [
                 'email' => [
-                    'primary' => AwsSesSender::class,
+                    'primary' => WhatsappSender::class,
                     'secondary' => SMTPSender::class
                 ]
             ]
@@ -87,7 +86,7 @@ class NotificationManagerTest extends TestCase
 
     public function testSendNotificationPrimaryAndSecondaryFailureFallbackPrimarySuccess()
     {
-        $primaryEmailSender = $this->createMock(AwsSesSender::class);
+        $primaryEmailSender = $this->createMock(WhatsappSender::class);
         $secondaryEmailSender = $this->createMock(SMTPSender::class);
         $primaryPushSender = $this->createMock(PushySender::class);
 
@@ -103,7 +102,7 @@ class NotificationManagerTest extends TestCase
             ],
             [
                 'email' => [
-                    'primary' => AwsSesSender::class,
+                    'primary' => WhatsappSender::class,
                     'secondary' => SMTPSender::class
                 ],
                 'push' => [

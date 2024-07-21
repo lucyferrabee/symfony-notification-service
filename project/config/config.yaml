@@ -1,0 +1,7 @@
+swiftmailer:
+    transport:  smtp
+    host:       email-smtp.us-east-1.amazonaws.com
+    port:       587
+    encryption: tls
+    username:   AKIAXYKJSVM64YZOGPXD
+    password:   BLU5SPL5AmbNRvnrs2Y84e7K9kbTLN75on4KxTNUfBw1

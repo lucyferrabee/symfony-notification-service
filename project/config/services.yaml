@@ -18,18 +18,17 @@ services:
             $notificationSenders: !tagged_iterator notification_sender
             $channelConfig: '%notification_channels%'
 
+    # App\NotificationPublisher\Infrastructure\Email\WhatsappSender:
+    #     arguments:
+    #         $twilioClient: '@Twilio\Rest\Client'  
+    #     tags: ['notification_sender']  
+
     App\NotificationPublisher\Application\Handler\SendNotificationHandler: ~
 
     App\NotificationPublisher\Command\SendNotificationCommand:
         tags: ['console.command']
-
-    App\NotificationPublisher\Infrastructure\Email\AwsSesSender:
-        tags: ['notification_sender']
-
+        
     App\NotificationPublisher\Infrastructure\Email\SMTPSender:
-        tags: ['notification_sender']
-
-    App\NotificationPublisher\Infrastructure\SMS\TwilioSender:
         tags: ['notification_sender']
 
     App\NotificationPublisher\Infrastructure\SMS\NexmoSender:
@@ -40,3 +39,22 @@ services:
 
     App\NotificationPublisher\Infrastructure\Push\FirebaseSender:
         tags: ['notification_sender']
+    
+    # Twilio\Rest\Client:
+    #     arguments:
+    #         $accountSid: '%env(TWILIO_ACCOUNT_SID)%'
+    #         $twilioAuthToken: '%env(TWILIO_AUTH_TOKEN)%'
+
+    # Pusher\Pusher:
+    #     arguments:
+    #         $key: '%env(PUSHER_KEY)%'
+    #         $secret: '%env(PUSHER_SECRET)%'
+    #         $appId: '%env(PUSHER_APP_ID)%'
+    #         $options:
+    #             cluster: '%env(PUSHER_CLUSTER)%'
+    #             useTLS: true
+
+    # App\NotificationPublisher\Infrastructure\Push\PusherSender:
+    #     arguments:
+    #         $pusher: '@Pusher\Pusher'
+    #     tags: ['notification_sender']

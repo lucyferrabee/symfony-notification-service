@@ -50,6 +50,8 @@ class NotificationManager
             }
         }
 
+        // TODO: if all channels are down, delay and re-send later
+
         throw new InvalidArgumentException("Service {$service} does not implement NotificationSenderInterface");
     }
 }
