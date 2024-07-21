@@ -1,6 +1,6 @@
 <?php
 
-namespace App\NotificationPublisher\Infrastructure\Push;
+namespace App\NotificationPublisher\Infrastructure\Email;
 use App\NotificationPublisher\Domain\Service\NotificationSenderInterface;
 
 class AwsSesSender implements NotificationSenderInterface

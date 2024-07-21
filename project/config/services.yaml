@@ -18,10 +18,10 @@ services:
             $notificationSenders: !tagged_iterator notification_sender
             $channelConfig: '%notification_channels%'
 
-    # App\NotificationPublisher\Infrastructure\Email\WhatsappSender:
-    #     arguments:
-    #         $twilioClient: '@Twilio\Rest\Client'  
-    #     tags: ['notification_sender']  
+    App\NotificationPublisher\Infrastructure\SMS\WhatsappSender:
+        # arguments:
+        #     $twilioClient: '@Twilio\Rest\Client'  
+        tags: ['notification_sender']  
 
     App\NotificationPublisher\Application\Handler\SendNotificationHandler: ~
 
@@ -29,6 +29,9 @@ services:
         tags: ['console.command']
         
     App\NotificationPublisher\Infrastructure\Email\SMTPSender:
+        tags: ['notification_sender']
+
+    App\NotificationPublisher\Infrastructure\Email\AwsSesSender:
         tags: ['notification_sender']
 
     App\NotificationPublisher\Infrastructure\SMS\NexmoSender:
@@ -53,8 +56,3 @@ services:
     #         $options:
     #             cluster: '%env(PUSHER_CLUSTER)%'
     #             useTLS: true
-
-    # App\NotificationPublisher\Infrastructure\Push\PusherSender:
-    #     arguments:
-    #         $pusher: '@Pusher\Pusher'
-    #     tags: ['notification_sender']

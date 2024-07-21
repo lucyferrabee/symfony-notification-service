@@ -1,6 +1,6 @@
 <?php
 
-namespace App\NotificationPublisher\Infrastructure\Email;
+namespace App\NotificationPublisher\Infrastructure\SMS;
 use App\NotificationPublisher\Domain\Service\NotificationSenderInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Twilio\Rest\Client;
@@ -9,9 +9,13 @@ class WhatsappSender implements NotificationSenderInterface
 {
     private Client $twilioClient;
 
-    public function __construct(Client $twilioClient)
+    // public function __construct(Client $twilioClient)
+    // {
+    //     $this->twilioClient = $twilioClient;
+    // }
+
+    public function __construct()
     {
-        $this->twilioClient = $twilioClient;
     }
 
     public function send(string $userId, string $message): bool
@@ -26,6 +30,12 @@ class WhatsappSender implements NotificationSenderInterface
         //     ]
         //   );
 
-        return true;
+        $result = (bool)random_int(0, 1);
+        if ($result) {
+            var_dump('Whatsapp notification sent');
+        } else {
+            var_dump('Whatsapp notification not sent');
+        }
+        return $result;
     }
 }

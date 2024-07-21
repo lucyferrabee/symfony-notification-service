@@ -28,6 +28,11 @@ class NotificationManager
             if (!$secondarySuccess) {
                 $newChannelAttempt = $this->sendWithChannel($userId, $message, $fallbackChannel);
                 $result[] = $newChannelAttempt;
+                
+                    if (!$newChannelAttempt) {
+                        $finalAttempt = $this->sendWithChannel($userId, $message, $fallbackChannel, true);
+                        $result[] = $finalAttempt;
+                    }
             }
         }
 

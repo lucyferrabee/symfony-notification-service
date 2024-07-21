@@ -3,12 +3,11 @@
 namespace App\Tests\NotificationPublisher\Application\Service;
 
 use App\NotificationPublisher\Application\Service\NotificationManager;
-use App\NotificationPublisher\Domain\Service\NotificationSenderInterface;
-use App\NotificationPublisher\Infrastructure\Email\WhatsappSender;
 use App\NotificationPublisher\Infrastructure\Email\SMTPSender;
+use App\NotificationPublisher\Infrastructure\Email\AwsSesSender;
+use App\NotificationPublisher\Infrastructure\SMS\WhatsappSender;
 use App\NotificationPublisher\Infrastructure\Push\FirebaseSender;
 use App\NotificationPublisher\Infrastructure\Push\PushySender;
-use App\NotificationPublisher\Infrastructure\SMS\NexmoSender;
 use PHPUnit\Framework\TestCase;
 
 class NotificationManagerTest extends TestCase
@@ -17,7 +16,7 @@ class NotificationManagerTest extends TestCase
 
     protected function setUp(): void
     {
-        $primaryEmailSender = $this->createMock(WhatsappSender::class);
+        $primaryEmailSender = $this->createMock(AwsSesSender::class);
         $secondaryEmailSender = $this->createMock(SMTPSender::class);
         $primarySmsSender = $this->createMock(WhatsappSender::class);
         $primaryPushSender = $this->createMock(PushySender::class);
@@ -40,9 +39,10 @@ class NotificationManagerTest extends TestCase
             ],
             [
                 'email' => [
+                    'primary' => AwsSesSender::class,
                     'secondary' => SMTPSender::class
                 ],
-                'whatsapp' => [
+                'sms' => [
                     'primary' => WhatsappSender::class,
                 ],
                 'push' => [

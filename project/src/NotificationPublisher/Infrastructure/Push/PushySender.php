@@ -9,9 +9,13 @@ class PushySender implements NotificationSenderInterface
 {
     private Pusher $pusher;
 
-    public function __construct(Pusher $pusher)
+    // public function __construct(Pusher $pusher)
+    // {
+    //     $this->pusher = $pusher;
+    // }
+
+    public function __construct()
     {
-        $this->pusher = $pusher;
     }
 
     public function send(string $userId, string $message): bool
@@ -25,6 +29,12 @@ class PushySender implements NotificationSenderInterface
         // } catch (\Exception $e) {
         //     return false;
         // }
-        return true;
+        $result = (bool)random_int(0, 1);
+        if ($result) {
+            var_dump('Pushy notification sent');
+        } else {
+            var_dump('Pushy notification not sent');
+        }
+        return $result;
     }
 }

@@ -4,15 +4,19 @@ namespace App\NotificationPublisher\Command;
 
 use App\NotificationPublisher\Application\Handler\SendNotificationHandler;
 use App\NotificationPublisher\Domain\Model\Notification;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+#[AsCommand(
+    name: 'app:send-notification',
+    description: 'Tries to send a notification via a specific channel and falls back to a second channel',
+)]
+
 class SendNotificationCommand extends Command
 {
-    protected static $defaultName = 'app:send-notification';
-
     private SendNotificationHandler $handler;
 
     public function __construct(SendNotificationHandler $handler)
@@ -40,8 +44,6 @@ class SendNotificationCommand extends Command
 
         $notification = new Notification($userId, $message, $channel, $fallbackChannel);
         $this->handler->handle($notification);
-
-        $output->writeln('Notification sent.');
 
         return Command::SUCCESS;
     }

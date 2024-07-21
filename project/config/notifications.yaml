@@ -2,10 +2,10 @@ parameters:
   notification_channels:
     email:
       primary: 'App\NotificationPublisher\Infrastructure\Email\SMTPSender'
-      secondary: 'App\NotificationPublisher\Infrastructure\Email\WhatsappSender'
+      secondary: 'App\NotificationPublisher\Infrastructure\Email\AwsSesSender'
     sms:
-      primary: 'App\NotificationPublisher\Infrastructure\SMS\NexmoSender'
-      secondary: 'App\NotificationPublisher\Infrastructure\SMS\AwsSesSender'
+      primary: 'App\NotificationPublisher\Infrastructure\SMS\WhatsappSender'
+      secondary: 'App\NotificationPublisher\Infrastructure\SMS\WhatsappSender'
     push:
       primary: 'App\NotificationPublisher\Infrastructure\Push\PushySender'
       secondary: 'App\NotificationPublisher\Infrastructure\Push\FirebaseSender'
