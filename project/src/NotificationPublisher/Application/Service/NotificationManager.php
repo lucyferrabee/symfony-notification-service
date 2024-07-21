@@ -15,17 +15,23 @@ class NotificationManager
         $this->channelConfig = $channelConfig;
     }
 
-    public function send(string $userId, string $message, string $primaryChannel, string $fallbackChannel)
+    public function send(string $userId, string $message, string $primaryChannel, string $fallbackChannel): array
     {
+        $result = [];
         $primarySuccess = $this->sendWithChannel($userId, $message, $primaryChannel);
+        $result[] = $primarySuccess;
 
         if (!$primarySuccess) {
             $secondarySuccess = $this->sendWithChannel($userId, $message, $primaryChannel, true);
+            $result[] = $secondarySuccess;
 
             if (!$secondarySuccess) {
-                $this->sendWithChannel($userId, $message, $fallbackChannel);
+                $newChannelAttempt = $this->sendWithChannel($userId, $message, $fallbackChannel);
+                $result[] = $newChannelAttempt;
             }
         }
+
+        return $result;
     }
 
     private function sendWithChannel(string $userId, string $message, string $channel, bool $isSecondary = false): bool
