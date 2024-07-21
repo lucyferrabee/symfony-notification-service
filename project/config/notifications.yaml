@@ -1,0 +1,17 @@
+notification:
+  channels:
+    email:
+      enabled: true
+      providers:
+        - primary: AWS_SES
+        - secondary: SMTP
+    sms:
+      enabled: true
+      providers:
+        - primary: Twilio
+        - secondary: Nexmo
+    push:
+      enabled: true
+      providers:
+        - primary: Pushy
+        - secondary: Firebase
