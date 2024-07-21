@@ -2,25 +2,25 @@
 
 namespace App\NotificationPublisher\Application\Handler;
 
-use App\NotificationPublisher\Application\Service\NotificationSender;
+use App\NotificationPublisher\Application\Service\NotificationManager;
 use App\NotificationPublisher\Domain\Model\Notification;
 
 class SendNotificationHandler
 {
-    private NotificationSender $notificationSender;
+    private NotificationManager $notificationManager;
 
-    public function __construct(NotificationSender $notificationSender)
+    public function __construct(NotificationManager $notificationManager)
     {
-        $this->notificationSender = $notificationSender;
+        $this->notificationManager = $notificationManager;
     }
 
     public function handle(Notification $notification)
     {
-        $this->notificationSender->send(
+        $this->notificationManager->send(
             $notification->getUserId(),
             $notification->getMessage(),
-            $notification->getChannel()
+            $notification->getChannel(),
+            $notification->getFallbackChannel()
         );
     }
 }
-

@@ -3,14 +3,11 @@
 namespace App\NotificationPublisher\Infrastructure\Email;
 use App\NotificationPublisher\Domain\Service\NotificationSenderInterface;
 
-class SMTPEmailSender implements NotificationSenderInterface
+class SMTPSender implements NotificationSenderInterface
 {
-    public function send(string $userId, string $message, string $channel): bool
+    public function send(string $userId, string $message): bool
     {
-        if ($channel !== 'email') {
-            throw new \InvalidArgumentException('Unsupported notification channel');
-        }
-
+        // TODO: implementation of secondary email provider
         $result = (bool)random_int(0, 1);
         if ($result) {
             var_dump('SMTP email sent');
@@ -20,8 +17,8 @@ class SMTPEmailSender implements NotificationSenderInterface
         return $result;
     }
 
-    public function supports(string $channel): bool
+    public function supports(string $channel, bool $isSecondary = false): bool
     {
-        return $channel === 'email';
+        return $channel === 'email' && $isSecondary;
     }
 }

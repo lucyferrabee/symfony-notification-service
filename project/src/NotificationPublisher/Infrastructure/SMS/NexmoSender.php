@@ -3,14 +3,11 @@
 namespace App\NotificationPublisher\Infrastructure\SMS;
 use App\NotificationPublisher\Domain\Service\NotificationSenderInterface;
 
-class NexmoSmsSender implements NotificationSenderInterface
+class NexmoSender implements NotificationSenderInterface
 {
-    public function send(string $userId, string $message, string $channel): bool
+    public function send(string $userId, string $message): bool
     {
-        if ($channel !== 'sms') {
-            throw new \InvalidArgumentException('Unsupported notification channel');
-        }
-
+        // TODO: implementation of secondary sms provider
         $result = (bool)random_int(0, 1);
         if ($result) {
             var_dump('Nexmo SMS sent');
@@ -20,8 +17,8 @@ class NexmoSmsSender implements NotificationSenderInterface
         return $result;
     }
 
-    public function supports(string $channel): bool
+    public function supports(string $channel, bool $isSecondary = false): bool
     {
-        return $channel === 'sms';
+        return $channel === 'sms' && $isSecondary;
     }
 }

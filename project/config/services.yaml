@@ -1,51 +1,42 @@
-# # This file is the entry point to configure your own services.
-# # Files in the packages/ subdirectory configure your dependencies.
-
-# # Put parameters here that don't need to change on each machine where the app is deployed
-# # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
-# parameters:
-
-# services:
-#     # default configuration for services in *this* file
-#     _defaults:
-#         autowire: true      # Automatically injects dependencies in your services.
-#         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
-#     # makes classes in src/ available to be used as services
-#     # this creates a service per class whose id is the fully-qualified class name
-#     App\:
-#         resource: '../src/'
-#         exclude:
-#             - '../src/DependencyInjection/'
-#             - '../src/Entity/'
-#             - '../src/Kernel.php'
-
-#     # add more service definitions when explicit configuration is needed
-#     # please note that last definitions always *replace* previous ones
-#     App\NotificationPublisher\Application\Service\NotificationSender:
-#         arguments:
-#             $emailSender: '@App\NotificationPublisher\Infrastructure\Email\EmailSender'
-#             $smsSender: '@App\NotificationPublisher\Infrastructure\SMS\SmsSender'
-#     App\NotificationPublisher\Infrastructure\Email\EmailSender: ~
-#     App\NotificationPublisher\Infrastructure\SMS\SmsSender: ~
+imports:
+  - { resource: 'notifications.yaml' }
 
 services:
-    # Default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
-        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-        # bind:
-        #     $emailSender: '@App\NotificationPublisher\Infrastructure\Email\EmailSender'
-        #     $smsSender: '@App\NotificationPublisher\Infrastructure\SMS\SmsSender'
+        autowire: true
+        autoconfigure: true
 
-    App\NotificationPublisher\Application\Service\NotificationSender:
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    App\NotificationPublisher\Application\Service\NotificationManager:
         arguments:
-            $emailSender: '@App\NotificationPublisher\Infrastructure\Email\AwsSesEmailSender'
-            $smsSender: '@App\NotificationPublisher\Infrastructure\SMS\TwilioSmsSender'
-
-    App\NotificationPublisher\Infrastructure\Email\AwsSesEmailSender: ~
-    App\NotificationPublisher\Infrastructure\SMS\TwilioSmsSender: ~
+            $notificationSenders: !tagged_iterator notification_sender
+            $channelConfig: '%notification_channels%'
 
     App\NotificationPublisher\Application\Handler\SendNotificationHandler: ~
+
     App\NotificationPublisher\Command\SendNotificationCommand:
         tags: ['console.command']
+
+    App\NotificationPublisher\Infrastructure\Email\AwsSesSender:
+        tags: ['notification_sender']
+
+    App\NotificationPublisher\Infrastructure\Email\SMTPSender:
+        tags: ['notification_sender']
+
+    App\NotificationPublisher\Infrastructure\SMS\TwilioSender:
+        tags: ['notification_sender']
+
+    App\NotificationPublisher\Infrastructure\SMS\NexmoSender:
+        tags: ['notification_sender']
+
+    App\NotificationPublisher\Infrastructure\Push\PushySender:
+        tags: ['notification_sender']
+
+    App\NotificationPublisher\Infrastructure\Push\FirebaseSender:
+        tags: ['notification_sender']

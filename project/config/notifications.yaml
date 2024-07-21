@@ -1,17 +1,11 @@
-notification:
-  channels:
+parameters:
+  notification_channels:
     email:
-      enabled: true
-      providers:
-        - primary: AWS_SES
-        - secondary: SMTP
+      primary: 'App\NotificationPublisher\Infrastructure\Email\AwsSesSender'
+      secondary: 'App\NotificationPublisher\Infrastructure\Email\SMTPSender'
     sms:
-      enabled: true
-      providers:
-        - primary: Twilio
-        - secondary: Nexmo
+      primary: 'App\NotificationPublisher\Infrastructure\SMS\TwilioSender'
+      secondary: 'App\NotificationPublisher\Infrastructure\SMS\NexmoSender'
     push:
-      enabled: true
-      providers:
-        - primary: Pushy
-        - secondary: Firebase
+      primary: 'App\NotificationPublisher\Infrastructure\Push\PushySender'
+      secondary: 'App\NotificationPublisher\Infrastructure\Push\FirebaseSender'

@@ -13,21 +13,22 @@ class SendNotificationCommand extends Command
 {
     protected static $defaultName = 'app:send-notification';
 
-    private SendNotificationHandler $sendNotificationHandler;
+    private SendNotificationHandler $handler;
 
-    public function __construct(SendNotificationHandler $sendNotificationHandler)
+    public function __construct(SendNotificationHandler $handler)
     {
+        $this->handler = $handler;
         parent::__construct();
-        $this->sendNotificationHandler = $sendNotificationHandler;
     }
 
     protected function configure()
     {
         $this
-            ->setDescription('Send a notification to a user')
+            ->setDescription('Send a notification')
             ->addArgument('userId', InputArgument::REQUIRED, 'The ID of the user')
-            ->addArgument('message', InputArgument::REQUIRED, 'The message to send')
-            ->addArgument('channel', InputArgument::REQUIRED, 'The notification channel (email or sms)');
+            ->addArgument('message', InputArgument::REQUIRED, 'The notification message')
+            ->addArgument('channel', InputArgument::REQUIRED, 'The notification channel (email, sms or push)')
+            ->addArgument('fallbackChannel', InputArgument::REQUIRED, 'The fallback notification channel');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -35,11 +36,12 @@ class SendNotificationCommand extends Command
         $userId = $input->getArgument('userId');
         $message = $input->getArgument('message');
         $channel = $input->getArgument('channel');
+        $fallbackChannel = $input->getArgument('fallbackChannel');
 
-        $notification = new Notification($userId, $message, $channel);
-        $this->sendNotificationHandler->handle($notification);
+        $notification = new Notification($userId, $message, $channel, $fallbackChannel);
+        $this->handler->handle($notification);
 
-        $output->writeln('Notification sent successfully.');
+        $output->writeln('Notification sent.');
 
         return Command::SUCCESS;
     }
