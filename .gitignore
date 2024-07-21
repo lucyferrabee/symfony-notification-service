@@ -7,3 +7,5 @@ project/src/.DS_Store
 
 # Ignore cache and build files
 project/var/cache/
+
+project/vendor
