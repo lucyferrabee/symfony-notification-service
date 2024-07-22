@@ -25,6 +25,8 @@ open new terminal
 
 **Run tests:**
 
+`composer require phpunit/phpunit`
+
 `vendor/bin/phpunit project/tests/NotificationPublisher/Service/NotificationManagerTest.php`
 
 **Sample commands to run:**
