@@ -34,9 +34,6 @@ services:
     App\NotificationPublisher\Infrastructure\Email\AwsSesSender:
         tags: ['notification_sender']
 
-    App\NotificationPublisher\Infrastructure\SMS\WhatsappSender:
-        tags: ['notification_sender']
-
     App\NotificationPublisher\Infrastructure\Push\PushySender:
         tags: ['notification_sender']
 
