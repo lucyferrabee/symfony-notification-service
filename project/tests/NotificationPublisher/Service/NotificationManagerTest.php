@@ -23,11 +23,11 @@ class NotificationManagerTest extends TestCase
         $secondaryPushSender = $this->createMock(FirebaseSender::class);
 
         // Configure the mocks
-        $primaryEmailSender->method('send')->willReturn(true); // Primary email sender will succeed
-        $secondaryEmailSender->method('send')->willReturn(false); // Secondary email sender will fail
-        $primarySmsSender->method('send')->willReturn(false); // Primary SMS sender will fail
-        $primaryPushSender->method('send')->willReturn(false); // Primary Push sender will fail
-        $secondaryPushSender->method('send')->willReturn(true); // Secondary Push sender will succeed
+        $primaryEmailSender->method('send')->willReturn(true);
+        $secondaryEmailSender->method('send')->willReturn(false);
+        $primarySmsSender->method('send')->willReturn(false);
+        $primaryPushSender->method('send')->willReturn(false);
+        $secondaryPushSender->method('send')->willReturn(true);
 
         $this->notificationManager = new NotificationManager(
             [
